@@ -13,20 +13,34 @@ def ball_in_box(m=5, blockers=[(0.5, 0.5), (0.5, -0.5), (0.5, 0.3)]):
     """
 
     # The following is an example implementation.
+    
+    mcircles = []
     circles = []
-    for circle_index in range(m):
+    mmax = 0.0
+    for i in range(1,10000):
+        sum = 0.0
+        for circle_index in range(m):
 
-        x = random.random()*2 - 1
-        y = random.random()*2 - 1
-        r = random.random()*0.1
-
-        circles.append((x, y, r))
-        while not validate(circles, blockers):
             x = random.random()*2 - 1
             y = random.random()*2 - 1
-            r = random.random()*0.1
-            circles[circle_index] = (x, y, r)
+            r = random.random()*1
 
-        circle_index += 1
-    
-    return circles
+            circles.append((x, y, r))
+            while not validate(circles, blockers):
+                x = random.random()*2 - 1
+                y = random.random()*2 - 1
+                r = random.random()*1
+                circles[circle_index] = (x, y, r)
+
+            circle_index += 1
+            
+        for Circle in circles:
+            sum+= Circle[2]**2 * math.pi
+        
+        if sum > mmax:
+            mmax = sum
+            mcircles[:] = []
+            mcircles = list(circles)
+        
+        circles[:] = []
+    return mcircles
